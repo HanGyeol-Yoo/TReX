@@ -13,8 +13,10 @@ from tqdm import tqdm
 ADD_SPECIAL_TOKENS = False
 TEXT_COL_CANDIDATES = ["text", "content", "raw", "document", "input", "inputs"]
 
-NUM_PROCS_PER_TOKENIZER = 4 
-MAX_WORKERS = 16            
+NUM_PROCS_PER_TOKENIZER = 4
+MAX_WORKERS = 16
+
+DEFAULT_DS_ROOT = Path(os.environ.get("TREX_DEFAULT_DS_ROOT", "./datasets"))
 
 def find_text_column(dataset) -> str:
     """Automatically find the text column in a dataset."""

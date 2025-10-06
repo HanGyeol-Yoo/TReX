@@ -1,16 +1,24 @@
-TOK_PATH=(
-    /home/work/mlp/trex/tokenizers/fineweb2_trex/30gb_200k
-)
+#!/bin/bash
+set -euo pipefail
 
-for TOK in "${TOK_PATH[@]}"
-do
+IFS=' ' read -r -a TOKENIZER_PATHS <<< "${TREX_TOKENIZER_PATHS:-/path/to/tokenizers/fineweb2_trex/30gb_200k}"
+DATA_ROOT="${TREX_VALID_DATA_ROOT:-/path/to/valid_data}"
+OUTPUT_ROOT="${TREX_RECORD_ROOT:-/path/to/records}"
+
+mkdir -p "$OUTPUT_ROOT"
+
+for TOK in "${TOKENIZER_PATHS[@]}"; do
     echo ">>> Running for $TOK"
-    
-    REL_PATH="${TOK#*/tokenizers/}"
+
+    TOK_NAME=$(basename "$TOK")
+    OUT_PKL="${OUTPUT_ROOT}/${TOK_NAME}_lang_concat_results.pkl"
 
     python3 -m trex.calculate_length \
-        --ds_root /home/work/mlp/trex/dataFW/valid_txt_ratio_hf \
-        --tok_root $TOK \
-        --out_pkl "/home/work/mlp/trex/records/comp/fineweb2_trex/$REL_PATH/lang_concat_results.pkl"
-    rm -rf /home/work/mlp/trex/dataFW/valid_txt_ratio_hf/*/cache*
+        --ds_root "$DATA_ROOT" \
+        --tok_root "$TOK" \
+        --out_pkl "$OUT_PKL"
+
+    if [ -d "$DATA_ROOT" ]; then
+        find "$DATA_ROOT" -maxdepth 2 -name "cache*" -type d -exec rm -rf {} +
+    fi
 done

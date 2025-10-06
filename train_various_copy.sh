@@ -1,45 +1,55 @@
 #!/bin/bash
-SETTING=0
-DIR_PATH="/home/work/mlp/trex/configs/fineweb2_base_jeabal"
-run_train () {
-    VOCAB_SIZE=$1
-    DATA_GB=$2
-    OUT_NAME=$3
+set -euo pipefail
 
-    for CFG_FILE in "$DIR_PATH"/*; do
+SETTING="${TREX_TOKENIZER_SETTING:-0}"
+CONFIG_DIR="${TREX_CONFIG_DIR:-/path/to/configs}"
+OUTPUT_ROOT="${TREX_TOKENIZER_OUTPUT_ROOT:-/path/to/tokenizers}"
+DATA_ROOT="${TREX_DATA_ROOT:-/path/to/data}"
+
+if [ ! -d "$CONFIG_DIR" ]; then
+    echo "❌ Config directory not found: $CONFIG_DIR" >&2
+    exit 1
+fi
+
+run_train () {
+    VOCAB_SIZE="$1"
+    DATA_BYTES="$2"
+    OUT_NAME="$3"
+
+    for CFG_FILE in "$CONFIG_DIR"/*.yaml; do
+        [ -e "$CFG_FILE" ] || continue
         BASENAME=$(basename "$CFG_FILE" .yaml)
-        CONFIG_NUM=${BASENAME#n}
 
         echo "🚀 Starting training with config: ${CFG_FILE}"
 
-        OUTPUT_DIR=/home/work/mlp/trex/tokenizers/fineweb2_hq_valid/${OUT_NAME}/${BASENAME}
+        OUTPUT_DIR="${OUTPUT_ROOT}/${OUT_NAME}/${BASENAME}"
 
-        # If OUTPUT_DIR exists, skip both train and preprocess
         if [ -d "$OUTPUT_DIR" ]; then
             echo "⚠️  ${OUTPUT_DIR} already exists. Skipping train/preprocess."
             continue
         fi
 
         python3 -m trex.train.train \
-            --output_dir $OUTPUT_DIR \
-            --cfg_file $CFG_FILE \
-            --num_bytes $DATA_GB \
-            --vocab_size $VOCAB_SIZE \
-            --setting $SETTING
-
-        wait
+            --output_dir "$OUTPUT_DIR" \
+            --cfg_file "$CFG_FILE" \
+            --num_bytes "$DATA_BYTES" \
+            --vocab_size "$VOCAB_SIZE" \
+            --setting "$SETTING"
 
         python3 -m trex.train.preprocess \
-            --process_tgt $OUTPUT_DIR \
-            --output_dir $OUTPUT_DIR/post_processed
+            --process_tgt "$OUTPUT_DIR" \
+            --output_dir "$OUTPUT_DIR/post_processed"
 
-        # rm -rf /home/work/mlp/trex/dataFW/train/*_trunc*
-        wait
+        if [ -d "$DATA_ROOT" ]; then
+            find "$DATA_ROOT" -name "*_trunc*" -type d -exec rm -rf {} +
+        fi
+
         sleep 3
     done
 }
-# 표에 맞는 실행 목록
-# run_train  64000 1073741856  1gb_64k
-# run_train  64000 5368709132  5gb_64k
-# run_train  100000 10737418272  10gb_100k
-run_train  200000 32212254844  30gb_200k
+
+# Examples:
+# run_train  64000 1073741824   example_1gb_64k
+# run_train  64000 5368709120   example_5gb_64k
+# run_train 100000 10737418240  example_10gb_100k
+run_train 200000 32212254720 example_30gb_200k
