@@ -36,6 +36,18 @@ Some workflows (for example, evaluating tokenizers) require access to Hugging Fa
 may need environment authentication. Set the appropriate `HF_HOME` or `HUGGINGFACE_HUB_CACHE`
 variables if you store datasets outside the repository.
 
+## Generating Mixture Configurations
+
+Use `mixture/make_config.py` to sample domain weightings for regression experiments. The script
+implements a temperature-controlled Dirichlet sampling strategy with clipping bounds derived from
+empirical token usage. Generate 512 candidate mixtures into `config_1m/` with:
+
+```bash
+python mixture/make_config.py --output_folder config_1m --num_configs 512
+```
+
+Each output file is a YAML configuration containing both train and validation mixtures, along with
+metadata documenting the sampling hyperparameters and proxy model settings.
 ## Training Tokenizers
 
 The tokenizer training pipeline lives in `train/train.py` and expects:
@@ -73,19 +85,6 @@ export TREX_DATA_ROOT=/absolute/path/to/raw_corpora
 ./train_various_tokenizer.sh
 ```
 
-## Generating Mixture Configurations
-
-Use `mixture/make_config.py` to sample domain weightings for regression experiments. The script
-implements a temperature-controlled Dirichlet sampling strategy with clipping bounds derived from
-empirical token usage. Generate 512 candidate mixtures into `config_1m/` with:
-
-```bash
-python mixture/make_config.py --output_folder config_1m --num_configs 512
-```
-
-Each output file is a YAML configuration containing both train and validation mixtures, along with
-metadata documenting the sampling hyperparameters and proxy model settings.
-
 ## Calculating Token Length Statistics
 
 `calculate_length.py` computes the tokenization length distribution for every combination of
@@ -112,10 +111,11 @@ estimates bytes-per-token efficiency across mixtures.
 
 The `notebook/` directory contains two primary notebooks:
 
-1. **`trex_regression_model_train_infer.ipynb`** – trains the regression model and predicts optimal
-   mixture weights for new tokenizer candidates.
-2. **`check_rank_invariance.ipynb`** – validates that the regression preserves rank ordering across
+1. **`check_rank_invariance.ipynb`** – validates that the regression preserves rank ordering across
    evaluation splits.
+2. **`trex_regression_model_train_infer.ipynb`** – trains the regression model and predicts optimal
+   mixture weights for new tokenizer candidates.
+
 
 Both notebooks now use anonymized, relative paths. Open them in Jupyter Lab or VS Code after
 activating your virtual environment.
