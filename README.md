@@ -1,5 +1,10 @@
-# TReX Tokenizer Regression for Optimal Data Mixture
+# TReX: Tokenizer Regression for Optimal Data Mixture
 
+## 📅 Timeline
+- **[2026/01/14]** 🚀 We released the full code and utilities.
+- **[2026/01/03]** 🎉 TReX has been accepted by **EACL 2026**!
+
+---
 This repository contains utilities and experiments for exploring tokenizer design and
 mixture optimization for language model pre-training. It includes:
 
