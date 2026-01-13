@@ -26,10 +26,9 @@ This project targets Python 3.10+ and depends on common machine learning librari
 started, create a virtual environment and install the requirements manually:
 
 ```bash
-python3 -m venv .venv
+uv venv
 source .venv/bin/activate
-pip install --upgrade pip
-pip install click datasets filelock numpy omegaconf pandas tqdm transformers pyyaml
+uv pip install click datasets filelock numpy omegaconf pandas tqdm transformers pyyaml
 ```
 
 Some workflows (for example, evaluating tokenizers) require access to Hugging Face datasets and
