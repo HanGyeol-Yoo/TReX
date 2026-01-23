@@ -134,9 +134,5 @@ A typical workflow to reproduce the paper results is:
 4. Analyze and select the best mixtures in the regression notebook.
 
 Make sure to cache datasets locally and adjust the script arguments to match your storage layout.
-
-## License
-
-This repository inherits the licensing terms of the original TReX project. If you plan to redistribute
-artifacts, consult the upstream license and ensure compliance with the datasets you consume.
+cense and ensure compliance with the datasets you consume.
 
