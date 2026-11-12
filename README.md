@@ -1,5 +1,6 @@
 # TReX: Tokenizer Regression for Optimal Data Mixture
 [![arXiv](https://img.shields.io/badge/arXiv-2601.13588-b31b1b.svg)](https://arxiv.org/abs/2601.13588)
+[![ACL Anthology](https://img.shields.io/badge/ACL%20Anthology-2026.eacl--long.298-184e77.svg)](https://aclanthology.org/2026.eacl-long.298/)
 
 - **[2026/01/13]** 🚀 We released the full code and utilities.
 - **[2026/01/03]** 🎉 TReX has been accepted by **EACL 2026**!
