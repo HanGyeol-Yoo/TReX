@@ -137,3 +137,27 @@ A typical workflow to reproduce the paper results is:
 Make sure to cache datasets locally and adjust the script arguments to match your storage layout.
 cense and ensure compliance with the datasets you consume.
 
+```
+@inproceedings{won-etal-2026-trex,
+    title = "{TR}e{X}: Tokenizer Regression for Optimal Data Mixture",
+    author = "Won, Inho  and
+      Yoo, Hangyeol  and
+      Cho, Minkyung  and
+      Park, Jungyeul  and
+      Song, Hoyun  and
+      Lim, KyungTae",
+    editor = "Demberg, Vera  and
+      Inui, Kentaro  and
+      Marquez, Llu{\'i}s",
+    booktitle = "Proceedings of the 19th Conference of the {E}uropean Chapter of the {A}ssociation for {C}omputational {L}inguistics (Volume 1: Long Papers)",
+    month = mar,
+    year = "2026",
+    address = "Rabat, Morocco",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2026.eacl-long.298/",
+    doi = "10.18653/v1/2026.eacl-long.298",
+    pages = "6353--6370",
+    ISBN = "979-8-89176-380-7",
+    abstract = "Building effective tokenizers for multilingual Large Language Models (LLMs) requires careful control over language-specific data mixtures. While a tokenizer{'}s compression performance critically affects the efficiency of LLM training and inference, existing approaches rely on heuristics or costly large-scale searches to determine optimal language ratios. We introduce $\textbf{T}$okenizer $\textbf{Re}$gression for Optimal Data Mi$\textbf{X}$ture ($\text{TReX}$), a regression-based framework that efficiently predicts the optimal data mixture for tokenizer training. $\text{TReX}$ trains small-scale proxy tokenizers on random mixtures, gathers their compression statistics, and learns to predict compression performance from data mixtures. This learned model enables scalable mixture search before large-scale tokenizer training, mitigating the accuracy-cost trade-off in multilingual tokenizer design. Tokenizers trained with TReX{'}s predicted mixtures outperform mixtures based on LLaMA3 and uniform distributions by up to 12{\%} in both in- and out-of-distribution compression efficiency, demonstrating strong scalability, robustness, and practical effectiveness."
+}
+```
